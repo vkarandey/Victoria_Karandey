@@ -4,11 +4,17 @@ FROM python:3.10-slim
 # Установка рабочей директории внутри контейнера
 WORKDIR /app
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libgomp1 && \
+    rm -rf /var/lib/apt/lists/*
+
 # Копирование файла с зависимостями
 COPY requirements.txt .
 
 # Установка всех необходимых пакетов
 RUN pip install --no-cache-dir -r requirements.txt
+
+RUN apt-get install libgomp1
 
 # Копирование всех файлов проекта в контейнер
 COPY . .
